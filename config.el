@@ -40,8 +40,8 @@
   ;; Enable flashing mode-line on errors
   (doom-themes-visual-bell-config)
   ;; Enable custom neotree theme (all-the-icons must be installed!)
-;; (doom-themes-neotree-config)
-;; or for treemacs users
+  ;; (doom-themes-neotree-config)
+  ;; or for treemacs users
   (setq doom-themes-treemacs-theme "doom-colors") ; use "doom-colors" for less minimal icon theme
   (doom-themes-treemacs-config)
   ;; Corrects (and improves) org-mode's native fontification.
@@ -50,14 +50,14 @@
 ;;
 ;;
 (setq
-        projectile-project-search-path '("~/Documents/Work/metaloka" "~/Documents/Work/Personal" "~/Documents/Work/Bytesoft" "~/Documents/Work/bytenext")
-        doom-font (font-spec :family "Ubuntu Mono derivative Powerline" :size 16 :weight 'light)
-        doom-unicode-font (font-spec :family "Ubuntu Mono derivative Powerline" :weight 'light)
-        doom-variable-pitch-font (font-spec :family "Ubuntu" :size 15 :weight 'light)
-        js-indent-level 2
-        typescript-indent-level 2
-        json-reformat:indent-width 2
-        prettier-js-args '("--single-quote")
+ projectile-project-search-path '("~/Documents/Work/metaloka" "~/Documents/Work/Personal" "~/Documents/Work/Bytesoft" "~/Documents/Work/bytenext")
+ doom-font (font-spec :family "Ubuntu Mono derivative Powerline" :size 16 :weight 'light)
+ doom-unicode-font (font-spec :family "Ubuntu Mono derivative Powerline" :weight 'light)
+ doom-variable-pitch-font (font-spec :family "Ubuntu" :size 15 :weight 'light)
+ js-indent-level 2
+ typescript-indent-level 2
+ json-reformat:indent-width 2
+ prettier-js-args '("--single-quote")
  )
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
@@ -107,16 +107,18 @@
 (global-set-key (kbd "S-C-<down>") 'shrink-window)
 (global-set-key (kbd "S-C-<up>") 'enlarge-window)
 
+(global-set-key (kbd "M-;") 'evilnc-comment-or-uncomment-lines)
+(global-set-key (kbd "C-/") 'evilnc-comment-or-uncomment-lines)
+
 (map! :leader
       "= =" #'format-all-buffer)
 
 (map!
- "=="           #'format-all-buffer
- "C-c i f"      #'js-doc-insert-function-doc
- "C-c i F"      #'js-doc-insert-file-doc
+ "M-k"          #'move-text-up
+ "M-j"          #'move-text-down
  )
 
 (eval-after-load 'web-mode
-    '(progn
-       (add-hook 'web-mode-hook #'add-node-modules-path)
-       (add-hook 'web-mode-hook #'prettier-js-mode)))
+  '(progn
+     (add-hook 'web-mode-hook #'add-node-modules-path)
+     (add-hook 'web-mode-hook #'prettier-js-mode)))

@@ -53,3 +53,4 @@
 (package! emacs-solidity
   :recipe (:host github :repo "ethereum/emacs-solidity"))
 (package! evil-nerd-commenter)
+(package! move-text)
