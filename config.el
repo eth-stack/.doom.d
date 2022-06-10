@@ -52,8 +52,8 @@
 (setq
         projectile-project-search-path '("~/Documents/Work/metaloka" "~/Documents/Work/Personal" "~/Documents/Work/Bytesoft" "~/Documents/Work/bytenext")
         doom-font (font-spec :family "Ubuntu Mono derivative Powerline" :size 16 :weight 'light)
-        doom-unicode-font (font-spec :family "Ubuntu Mono derivative Powerline")
-        doom-variable-pitch-font (font-spec :family "Ubuntu" :size 16 :weight 'regular)
+        doom-unicode-font (font-spec :family "Ubuntu Mono derivative Powerline" :weight 'light)
+        doom-variable-pitch-font (font-spec :family "Ubuntu" :size 15 :weight 'light)
         js-indent-level 2
         typescript-indent-level 2
         json-reformat:indent-width 2
@@ -106,3 +106,17 @@
 (global-set-key (kbd "S-C-<right>") 'enlarge-window-horizontally)
 (global-set-key (kbd "S-C-<down>") 'shrink-window)
 (global-set-key (kbd "S-C-<up>") 'enlarge-window)
+
+(map! :leader
+      "= =" #'format-all-buffer)
+
+(map!
+ "=="           #'format-all-buffer
+ "C-c i f"      #'js-doc-insert-function-doc
+ "C-c i F"      #'js-doc-insert-file-doc
+ )
+
+(eval-after-load 'web-mode
+    '(progn
+       (add-hook 'web-mode-hook #'add-node-modules-path)
+       (add-hook 'web-mode-hook #'prettier-js-mode)))
