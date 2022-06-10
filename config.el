@@ -31,7 +31,6 @@
 ;; There are two ways to load a theme. Both assume the theme is installed and
 ;; available. You can either set `doom-theme' or manually load a theme with the
 (use-package doom-themes
-  :ensure t
   :config
   ;; Global settings (defaults)
   (setq doom-themes-enable-bold t    ; if nil, bold is universally disabled
@@ -54,7 +53,7 @@
         projectile-project-search-path '("~/Documents/Work/metaloka" "~/Documents/Work/Personal" "~/Documents/Work/Bytesoft" "~/Documents/Work/bytenext")
         doom-font (font-spec :family "Ubuntu Mono derivative Powerline" :size 16 :weight 'light)
         doom-unicode-font (font-spec :family "Ubuntu Mono derivative Powerline")
-        doom-variable-pitch-font (font-spec :family "Noto Sans CJK JP" :size 15 :weight 'light)
+        doom-variable-pitch-font (font-spec :family "Ubuntu" :size 16 :weight 'regular)
         js-indent-level 2
         typescript-indent-level 2
         json-reformat:indent-width 2
