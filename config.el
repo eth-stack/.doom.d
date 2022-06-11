@@ -110,8 +110,12 @@
 (global-set-key (kbd "M-;") 'evilnc-comment-or-uncomment-lines)
 (global-set-key (kbd "C-/") 'evilnc-comment-or-uncomment-lines)
 
-(map! :leader
-      "= =" #'format-all-buffer)
+(map!
+ :leader "= ="        #'prettier-prettify
+ )
+
+(map!
+ )
 
 (map!
  "M-k"          #'move-text-up
