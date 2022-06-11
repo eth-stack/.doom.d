@@ -49,6 +49,7 @@
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
 (package! prettier-js)
+(package! prettier)
 (package! sql-indent)
 (package! emacs-solidity
   :recipe (:host github :repo "ethereum/emacs-solidity"))

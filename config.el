@@ -118,7 +118,12 @@
  "M-j"          #'move-text-down
  )
 
+(add-hook 'js2-mode-hook 'prettier-js-mode)
+(add-hook 'web-mode-hook 'prettier-js-mode)
+
 (eval-after-load 'web-mode
   '(progn
      (add-hook 'web-mode-hook #'add-node-modules-path)
      (add-hook 'web-mode-hook #'prettier-js-mode)))
+
+(setq format-all-debug t)
