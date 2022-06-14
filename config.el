@@ -111,7 +111,7 @@
 (global-set-key (kbd "C-/") 'evilnc-comment-or-uncomment-lines)
 
 (map!
- :leader "= ="        #'prettier-prettify
+ :leader "= ="        #'format-all-buffer
 
  :leader "["        #'hs-hide-block
  :leader "]"        #'hs-show-block
