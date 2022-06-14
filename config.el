@@ -115,11 +115,11 @@
  )
 
 (map!
- )
-
-(map!
  "M-k"          #'move-text-up
  "M-j"          #'move-text-down
+ :nv "gr"           #'lsp-find-references
+ :nv "gi"           #'lsp-find-implementation
+ :nv "gy"           #'lsp-find-type-definition
  )
 
 (add-hook 'js2-mode-hook 'prettier-js-mode)
