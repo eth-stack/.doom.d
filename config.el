@@ -112,13 +112,14 @@
 
 (map!
  :leader "= ="        #'prettier-prettify
+
+ :leader "["        #'hs-hide-block
+ :leader "]"        #'hs-show-block
  )
 
 (map!
  "M-k"          #'move-text-up
  "M-j"          #'move-text-down
- :nv "<"        #'hs-hide-block
- :nv ">"        #'hs-show-block
 
  :nv "gr"           #'lsp-find-references
  :nv "gi"           #'lsp-find-implementation
@@ -138,13 +139,15 @@
 ;; lsp format use prettier
 (add-hook! 'after-init-hook
   (progn
-    (setq-hook! 'typescript-mode-hook +format-with :nil)
+    (setq-hook! 'typescript-mode-hook +format-with 'prettier-prettify)
     (add-hook! 'typescript-mode-hook 'prettier-mode)
-    (setq-hook! 'rjsx-mode-hook +format-with :nil)
+
+
+    (setq-hook! 'rjsx-mode-hook +format-with 'prettier-prettify)
     (add-hook! 'rjsx-mode-hook 'prettier-mode)
-    (setq-hook! 'js2-mode-hook +format-with :nil)
+    (setq-hook! 'js2-mode-hook +format-with 'prettier-prettify)
     (add-hook! 'js2-mode-hook 'prettier-mode)
-    (setq-hook! 'typescript-tsx-mode-hook +format-with :nil)
+    (setq-hook! 'typescript-tsx-mode-hook +format-with 'prettier-prettify)
     (add-hook! 'typescript-tsx-mode-hook 'prettier-mode)
     ))
 
