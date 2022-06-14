@@ -139,15 +139,15 @@
 ;; lsp format use prettier
 (add-hook! 'after-init-hook
   (progn
-    (setq-hook! 'typescript-mode-hook +format-with 'prettier-prettify)
+    (setq-hook! 'typescript-mode-hook +format-with 'prettier)
     (add-hook! 'typescript-mode-hook 'prettier-mode)
 
 
-    (setq-hook! 'rjsx-mode-hook +format-with 'prettier-prettify)
+    (setq-hook! 'rjsx-mode-hook +format-with 'prettier)
     (add-hook! 'rjsx-mode-hook 'prettier-mode)
-    (setq-hook! 'js2-mode-hook +format-with 'prettier-prettify)
+    (setq-hook! 'js2-mode-hook +format-with 'prettier)
     (add-hook! 'js2-mode-hook 'prettier-mode)
-    (setq-hook! 'typescript-tsx-mode-hook +format-with 'prettier-prettify)
+    (setq-hook! 'typescript-tsx-mode-hook +format-with 'prettier)
     (add-hook! 'typescript-tsx-mode-hook 'prettier-mode)
     ))
 
