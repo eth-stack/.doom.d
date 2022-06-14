@@ -117,6 +117,9 @@
 (map!
  "M-k"          #'move-text-up
  "M-j"          #'move-text-down
+ :nv "<"        #'hs-hide-block
+ :nv ">"        #'hs-show-block
+
  :nv "gr"           #'lsp-find-references
  :nv "gi"           #'lsp-find-implementation
  :nv "gy"           #'lsp-find-type-definition
