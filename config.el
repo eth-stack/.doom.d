@@ -53,7 +53,7 @@
  projectile-project-search-path '("~/Documents/Work/metaloka" "~/Documents/Work/Personal" "~/Documents/Work/Bytesoft" "~/Documents/Work/bytenext")
  doom-font (font-spec :family "Ubuntu Mono derivative Powerline" :size 16 :weight 'light)
  doom-unicode-font (font-spec :family "Ubuntu Mono derivative Powerline" :weight 'light)
- doom-variable-pitch-font (font-spec :family "Ubuntu" :size 15 :weight 'light)
+ doom-variable-pitch-font (font-spec :family "Ubuntu" :size 15)
  js-indent-level 2
  typescript-indent-level 2
  json-reformat:indent-width 2
