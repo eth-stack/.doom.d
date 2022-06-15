@@ -110,12 +110,20 @@
 (global-set-key (kbd "M-;") 'evilnc-comment-or-uncomment-lines)
 (global-set-key (kbd "C-/") 'evilnc-comment-or-uncomment-lines)
 
-(map! :leader
-      "= =" #'format-all-buffer)
+(map!
+ :leader "= ="        #'format-all-buffer
+
+ :leader "["        #'hs-hide-block
+ :leader "]"        #'hs-show-block
+ )
 
 (map!
  "M-k"          #'move-text-up
  "M-j"          #'move-text-down
+
+ :nv "gr"           #'lsp-find-references
+ :nv "gi"           #'lsp-find-implementation
+ :nv "gy"           #'lsp-find-type-definition
  )
 
 (add-hook 'js2-mode-hook 'prettier-js-mode)
@@ -127,3 +135,36 @@
      (add-hook 'web-mode-hook #'prettier-js-mode)))
 
 (setq format-all-debug t)
+
+;; lsp format use prettier
+(add-hook! 'after-init-hook
+  (progn
+    (add-hook! 'typescript-mode-hook 'prettier-mode)
+    (add-hook! 'rjsx-mode-hook 'prettier-mode)
+    (add-hook! 'js2-mode-hook 'prettier-mode)
+    (add-hook! 'typescript-tsx-mode-hook 'prettier-mode)
+    ))
+
+
+
+(use-package! typescript-mode
+  :init
+  (define-derived-mode typescript-tsx-mode typescript-mode "typescript-tsx")
+  (add-to-list 'auto-mode-alist (cons (rx ".tsx" string-end) #'typescript-tsx-mode))
+  )
+
+(add-hook! typescript-tsx-mode 'lsp!)
+
+(use-package! tree-sitter
+  :hook (prog-mode . turn-on-tree-sitter-mode)
+  :hook (tree-sitter-after-on . tree-sitter-hl-mode)
+  :config
+  (require 'tree-sitter-langs)
+
+  (tree-sitter-require 'tsx)
+  (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-mode . tsx))
+
+  ;; This makes every node a link to a section of code
+  (setq tree-sitter-debug-jump-buttons t
+        ;; and this highlights the entire sub tree in your code
+        tree-sitter-debug-highlight-jump-region t))
