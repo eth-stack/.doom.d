@@ -2,6 +2,34 @@
 
 ;; Place your private configuration here! Remember, you do not need to run 'doom
 ;; sync' after modifying this file!
+;;
+
+;;;###autoload
+(defun dqv/edit-zsh-configuration ()
+  (interactive)
+  (find-file "~/.zshrc"))
+
+;;;###autoload
+(defun dqv/use-eslint-from-node-modules ()
+  "Set local eslint if available."
+  (let* ((root (locate-dominating-file
+                (or (buffer-file-name) default-directory)
+                "node_modules"))
+         (eslint (and root
+                      (expand-file-name "node_modules/eslint/bin/eslint.js"
+                                        root))))
+    (when (and eslint (file-executable-p eslint))
+      (setq-local flycheck-javascript-eslint-executable eslint))))
+
+;;;###autoload
+(defun dqv/goto-match-paren (arg)
+  "Go to the matching if on (){}[], similar to vi style of % ."
+  (interactive "p")
+  (cond ((looking-at "[\[\(\{]") (evil-jump-item))
+        ((looking-back "[\]\)\}]" 1) (evil-jump-item))
+        ((looking-at "[\]\)\}]") (forward-char) (evil-jump-item))
+        ((looking-back "[\[\(\{]" 1) (backward-char) (evil-jump-item))
+        (t nil)))
 
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
@@ -47,17 +75,34 @@
   (doom-themes-treemacs-config)
   ;; Corrects (and improves) org-mode's native fontification.
   (doom-themes-org-config))
-;; `load-theme' function. This is the default
-;;
-;;
+
+
+(defun dqv/org-mode-visual-fill ()
+  (setq visual-fill-column-width 120
+        visual-fill-column-center-text t
+        )
+  (visual-fill-column-mode 1)
+  )
+
+(use-package! visual-fill
+  :hook (org-mode . dqv/org-mode-visual-fill))
+
+(delete-selection-mode t)
+
 (setq
  projectile-project-search-path '("~/Documents/Work/metaloka" "~/Documents/Work/Personal" "~/Documents/Work/Bytesoft" "~/Documents/Work/bytenext")
- doom-font (font-spec :family "Ubuntu Mono derivative Powerline" :size 16 :weight 'light)
+ doom-font (font-spec :family "Ubuntu Mono derivative Powerline" :size 18 :weight 'light)
  doom-unicode-font (font-spec :family "Ubuntu Mono derivative Powerline" :weight 'light)
  doom-variable-pitch-font (font-spec :family "Ubuntu" :size 15)
  js-indent-level 2
  typescript-indent-level 2
  json-reformat:indent-width 2
+
+ ;; lsp
+ lsp-ui-sideline-enable nil
+ lsp-ui-doc-enable nil
+ lsp-enable-symbol-highlighting nil
+ +lsp-prompt-to-install-server 'quiet
  )
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
@@ -141,16 +186,16 @@
 
 ;; lsp format use prettier
 (add-hook! 'after-init-hook
-           (progn
-  (setq-hook! 'typescript-mode-hook +format-with :nil)
-  (add-hook! 'typescript-mode-hook 'prettier-mode)
-  (setq-hook! 'rjsx-mode-hook +format-with :nil)
-  (add-hook! 'rjsx-mode-hook 'prettier-mode)
-  (setq-hook! 'js2-mode-hook +format-with :nil)
-  (add-hook! 'js2-mode-hook 'prettier-mode)
-  (setq-hook! 'typescript-tsx-mode-hook +format-with :nil)
-  (add-hook! 'typescript-tsx-mode-hook 'prettier-mode)
-  ))
+  (progn
+    (setq-hook! 'typescript-mode-hook +format-with :nil)
+    (add-hook! 'typescript-mode-hook 'prettier-mode)
+    (setq-hook! 'rjsx-mode-hook +format-with :nil)
+    (add-hook! 'rjsx-mode-hook 'prettier-mode)
+    (setq-hook! 'js2-mode-hook +format-with :nil)
+    (add-hook! 'js2-mode-hook 'prettier-mode)
+    (setq-hook! 'typescript-tsx-mode-hook +format-with :nil)
+    (add-hook! 'typescript-tsx-mode-hook 'prettier-mode)
+    ))
 
 
 
@@ -207,24 +252,6 @@
   )
 
 
-
 (custom-set-faces
  `(font-lock-type-face ((t (:foreground ,(doom-color 'dark-cyan)))))
  )
-
-
-(use-package! tree-sitter
-  :hook (prog-mode . turn-on-tree-sitter-mode)
-  :hook (tree-sitter-after-on . tree-sitter-hl-mode)
-  :config
-  (require 'tree-sitter-langs)
-
-  (global-tree-sitter-mode-enable-in-buffers)
-
-  (tree-sitter-require 'tsx)
-  (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-mode . tsx))
-
-  ;; This makes every node a link to a section of code
-  (setq tree-sitter-debug-jump-buttons t
-        ;; and this highlights the entire sub tree in your code
-        tree-sitter-debug-highlight-jump-region t))
