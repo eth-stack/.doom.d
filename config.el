@@ -136,14 +136,21 @@
 
 (setq format-all-debug t)
 
+(add-hook 'after-init-hook #'global-prettier-mode)
+(add-hook 'after-init-hook #'global-tree-sitter-mode)
+
 ;; lsp format use prettier
 (add-hook! 'after-init-hook
-  (progn
-    (add-hook! 'typescript-mode-hook 'prettier-mode)
-    (add-hook! 'rjsx-mode-hook 'prettier-mode)
-    (add-hook! 'js2-mode-hook 'prettier-mode)
-    (add-hook! 'typescript-tsx-mode-hook 'prettier-mode)
-    ))
+           (progn
+  (setq-hook! 'typescript-mode-hook +format-with :nil)
+  (add-hook! 'typescript-mode-hook 'prettier-mode)
+  (setq-hook! 'rjsx-mode-hook +format-with :nil)
+  (add-hook! 'rjsx-mode-hook 'prettier-mode)
+  (setq-hook! 'js2-mode-hook +format-with :nil)
+  (add-hook! 'js2-mode-hook 'prettier-mode)
+  (setq-hook! 'typescript-tsx-mode-hook +format-with :nil)
+  (add-hook! 'typescript-tsx-mode-hook 'prettier-mode)
+  ))
 
 
 
@@ -190,6 +197,16 @@
     (add-hook! 'js2-mode-hook 'hexcolour-add-to-font-lock)
     ))
 
+(after! treemacs
+  (setq
+   evil-treemacs-state-cursor 'box
+   treemacs-project-follow-cleanup t
+   treemacs-width 25
+   )
+  (treemacs-follow-mode +1)
+  )
+
+
 
 (custom-set-faces
  `(font-lock-type-face ((t (:foreground ,(doom-color 'dark-cyan)))))
@@ -201,6 +218,8 @@
   :hook (tree-sitter-after-on . tree-sitter-hl-mode)
   :config
   (require 'tree-sitter-langs)
+
+  (global-tree-sitter-mode-enable-in-buffers)
 
   (tree-sitter-require 'tsx)
   (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-mode . tsx))
