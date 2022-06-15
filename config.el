@@ -168,3 +168,41 @@
   (setq tree-sitter-debug-jump-buttons t
         ;; and this highlights the entire sub tree in your code
         tree-sitter-debug-highlight-jump-region t))
+
+
+(defvar hexcolour-keywords
+  '(("#[abcdef[:digit:]]\\{3,6\\}"
+     (0 (let ((colour (match-string-no-properties 0)))
+          (if (or (= (length colour) 4)
+                  (= (length colour) 7))
+              (put-text-property
+               (match-beginning 0)
+               (match-end 0)
+               'face (list :background (match-string-no-properties 0)
+                           :foreground (if (>= (apply '+ (x-color-values
+                                                          (match-string-no-properties 0)))
+                                               (* (apply '+ (x-color-values "white")) .6))
+                                           "black" ;; light bg, dark text
+                                         "white" ;; dark bg, light text
+                                         )))))
+        append))))
+
+(defun hexcolour-add-to-font-lock ()
+  (interactive)
+  (font-lock-add-keywords nil hexcolour-keywords t))
+
+
+(add-hook! 'after-init-hook
+  (progn
+    (add-hook! 'typescript-mode-hook 'hexcolour-add-to-font-lock)
+    (add-hook! 'typescript-tsx-mode-hook 'hexcolour-add-to-font-lock)
+    (add-hook! 'css-mode-hook 'hexcolour-add-to-font-lock)
+    (add-hook! 'elisp-byte-code-mode-hook 'hexcolour-add-to-font-lock)
+    (add-hook! 'rjsx-mode-hook 'hexcolour-add-to-font-lock)
+    (add-hook! 'js2-mode-hook 'hexcolour-add-to-font-lock)
+    ))
+
+
+(custom-set-faces
+ `(font-lock-type-face ((t (:foreground ,(doom-color 'dark-cyan)))))
+ )
