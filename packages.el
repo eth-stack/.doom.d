@@ -50,6 +50,7 @@
 ;(unpin! t)
 (package! prettier-js)
 (package! prettier)
+(package! dotenv-mode)
 (package! sql-indent)
 (package! emacs-solidity
   :recipe (:host github :repo "ethereum/emacs-solidity"))
@@ -57,3 +58,6 @@
 (package! move-text)
 (package! tree-sitter)
 (package! tree-sitter-langs)
+(package! evil-textobj-tree-sitter)
+(package! engine-mode)
+(package! leetcode)

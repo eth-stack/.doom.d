@@ -5,32 +5,20 @@
 ;;
 
 ;;;###autoload
-(defun dqv/edit-zsh-configuration ()
+(defun my/edit-zsh-configuration ()
   (interactive)
   (find-file "~/.zshrc"))
 
 ;;;###autoload
-(defun dqv/use-eslint-from-node-modules ()
-  "Set local eslint if available."
+(defun my/use-eslint-from-node-modules ()
   (let* ((root (locate-dominating-file
                 (or (buffer-file-name) default-directory)
                 "node_modules"))
          (eslint (and root
-                      (expand-file-name "node_modules/eslint/bin/eslint.js"
+                      (expand-file-name "node_modules/.bin/eslint"
                                         root))))
     (when (and eslint (file-executable-p eslint))
       (setq-local flycheck-javascript-eslint-executable eslint))))
-
-;;;###autoload
-(defun dqv/goto-match-paren (arg)
-  "Go to the matching if on (){}[], similar to vi style of % ."
-  (interactive "p")
-  (cond ((looking-at "[\[\(\{]") (evil-jump-item))
-        ((looking-back "[\]\)\}]" 1) (evil-jump-item))
-        ((looking-at "[\]\)\}]") (forward-char) (evil-jump-item))
-        ((looking-back "[\[\(\{]" 1) (backward-char) (evil-jump-item))
-        (t nil)))
-
 
 ;; Some functionality uses this to identify you, e.g. GPG configuration, email
 ;; clients, file templates and snippets. It is optional.
@@ -91,9 +79,9 @@
 
 (setq
  projectile-project-search-path '("~/Documents/Work/metaloka" "~/Documents/Work/Personal" "~/Documents/Work/Bytesoft" "~/Documents/Work/bytenext")
- doom-font (font-spec :family "Ubuntu Mono derivative Powerline" :size 18 :weight 'light)
- doom-unicode-font (font-spec :family "Ubuntu Mono derivative Powerline" :weight 'light)
- doom-variable-pitch-font (font-spec :family "Ubuntu" :size 15)
+ doom-font (font-spec :family "Ubuntu Mono" :size 18 :weight 'light)
+ doom-unicode-font (font-spec :family "Ubuntu Mono" :weight 'light)
+ doom-variable-pitch-font (font-spec :family "Ubuntu" :size 16)
  js-indent-level 2
  typescript-indent-level 2
  json-reformat:indent-width 2
@@ -156,7 +144,7 @@
 (global-set-key (kbd "C-/") 'evilnc-comment-or-uncomment-lines)
 
 (map!
- :leader "= ="        #'format-all-buffer
+ :leader "= ="        #'prettier-prettify
 
  :leader "["        #'hs-hide-block
  :leader "]"        #'hs-show-block
@@ -182,6 +170,8 @@
 (setq format-all-debug t)
 
 (add-hook 'after-init-hook #'global-prettier-mode)
+(setenv "NODE_PATH" "/usr/local/lib/node_modules")
+
 (add-hook 'after-init-hook #'global-tree-sitter-mode)
 
 ;; lsp format use prettier
@@ -255,3 +245,68 @@
 (custom-set-faces
  `(font-lock-type-face ((t (:foreground ,(doom-color 'dark-cyan)))))
  )
+
+(use-package! dotenv-mode
+  :mode ("\\.env\\.?.*\\'" . dotenv-mode))
+
+
+(use-package engine-mode
+  :config
+  (engine/set-keymap-prefix (kbd "C-c s"))
+  (setq browse-url-browser-function 'browse-url-default-macosx-browser
+        engine/browser-function 'browse-url-default-macosx-browser
+        ;; browse-url-generic-program "google-chrome"
+        )
+  (defengine duckduckgo
+    "https://duckduckgo.com/?q=%s"
+    :keybinding "d")
+
+  (defengine github
+    "https://github.com/search?ref=simplesearch&q=%s"
+    :keybinding "sh")
+
+  (defengine gitlab
+    "https://gitlab.com/search?search=%s&group_id=&project_id=&snippets=false&repository_ref=&nav_source=navbar"
+    :keybinding "sl")
+
+  (defengine stack-overflow
+    "https://stackoverflow.com/search?q=%s"
+    :keybinding "o")
+
+  (defengine npm
+    "https://www.npmjs.com/search?q=%s"
+    :keybinding "n")
+
+  (defengine crates
+    "https://crates.io/search?q=%s"
+    :keybinding "c")
+
+  (defengine localhost
+    "http://localhost:%s"
+    :keybinding "l")
+
+  (defengine translate
+    "https://translate.google.com/?sl=en&tl=vi&text=%s&op=translate"
+    :keybinding "t")
+
+  (defengine youtube
+    "http://www.youtube.com/results?aq=f&oq=&search_query=%s"
+    :keybinding "y")
+
+  (defengine google
+    "http://www.google.com/search?ie=utf-8&oe=utf-8&q=%s"
+    :keybinding "g")
+
+  (engine-mode 1))
+
+(use-package! flycheck
+  :config
+  (add-hook 'after-init-hook 'global-flycheck-mode)
+  (add-hook 'flycheck-mode-hook 'my/use-eslint-from-node-modules))
+
+(after! leetcode
+  (setq leetcode-prefer-language "rust"
+        leetcode-prefer-sql "mysql"
+        leetcode-save-solutions t
+        leetcode-directory "~/github/nghiatd/go-leetcode")
+  )
