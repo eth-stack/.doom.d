@@ -170,8 +170,6 @@
 (setq format-all-debug t)
 
 (add-hook 'after-init-hook #'global-prettier-mode)
-(setenv "NODE_PATH" "/usr/local/lib/node_modules")
-
 (add-hook 'after-init-hook #'global-tree-sitter-mode)
 
 ;; lsp format use prettier
@@ -244,6 +242,7 @@
 
 (custom-set-faces
  `(font-lock-type-face ((t (:foreground ,(doom-color 'dark-cyan)))))
+ `(web-mode-html-tag-face ((t (:foreground,(doom-color 'magenta)), :weight 'normal)))
  )
 
 (use-package! dotenv-mode
@@ -310,3 +309,15 @@
         leetcode-save-solutions t
         leetcode-directory "~/github/nghiatd/go-leetcode")
   )
+
+
+(use-package! tree-sitter
+  :config
+
+  (tree-sitter-require 'tsx)
+  (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-mode . tsx))
+
+  ;; This makes every node a link to a section of code
+  (setq tree-sitter-debug-jump-buttons t
+        ;; and this highlights the entire sub tree in your code
+        tree-sitter-debug-highlight-jump-region t))
