@@ -87,14 +87,11 @@
  json-reformat:indent-width 2
 
  ;; lsp
- lsp-headerline-breadcrumb-enable t
- lsp-lens-enable t
- lsp-ui-sideline-enable t
- lsp-diagnostics-provider 'flycheck
- lsp-ui-doc-enable t
- lsp-modeline-code-actions-enable t
+ lsp-ui-doc-enable nil
  +lsp-prompt-to-install-server 'quiet
  )
+
+(add-to-list 'initial-frame-alist '(fullscreen . maximized))
 
 ;; This determines the style of line numbers in effect. If set to `nil', line
 ;; numbers are disabled. For relative line numbers, set this to `relative'.
@@ -175,6 +172,46 @@
 (add-hook 'after-init-hook #'global-prettier-mode)
 (add-hook 'after-init-hook #'global-tree-sitter-mode)
 
+(use-package! lsp-mode
+  :commands lsp
+  :config
+  (setq lsp-idle-delay 0.2
+        lsp-enable-file-watchers nil
+        lsp-completion-provider t
+        lsp-eldoc-render-all t
+        )
+  (add-hook 'lsp-mode-hook 'lsp-ui-mode)
+
+  :custom
+  ;; what to use when checking on-save. "check" is default, I prefer clippy
+  (lsp-rust-analyzer-cargo-watch-command "clippy")
+  (lsp-rust-analyzer-server-display-inlay-hints t)
+  (lsp-rust-analyzer-display-lifetime-elision-hints-enable "skip_trivial")
+  (lsp-rust-analyzer-display-chaining-hints t)
+  (lsp-rust-analyzer-display-lifetime-elision-hints-use-parameter-names nil)
+  (lsp-rust-analyzer-display-closure-return-type-hints t)
+  (lsp-rust-analyzer-display-parameter-hints nil)
+  (lsp-rust-analyzer-display-reborrow-hints nil)
+  )
+
+(use-package! lsp-ui
+  :commands lsp-ui-mode
+  :hook (lsp-mode . lsp-ui-mode)
+  :config
+  (setq lsp-headerline-breadcrumb-enable t ;
+        lsp-lens-enable t                  ;
+        )
+  :bind (:map lsp-ui-mode-map
+         ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
+         ([remap xref-find-references] . lsp-ui-peek-find-references)
+         ([remap xref-pop-marker-stack] . lsp-ui-peek-jump-backward)
+         )
+  :custom
+  (lsp-ui-doc-position 'bottom)
+  (lsp-ui-peek-always-show t)
+  (lsp-ui-sideline-show-hover t)
+  )
+
 ;; lsp format use prettier
 (add-hook! 'after-init-hook
   (progn
@@ -197,7 +234,6 @@
   )
 
 (add-hook! typescript-tsx-mode 'lsp!)
-
 
 
 
@@ -324,3 +360,27 @@
   (setq tree-sitter-debug-jump-buttons t
         ;; and this highlights the entire sub tree in your code
         tree-sitter-debug-highlight-jump-region t))
+
+(after! prog-mode
+  (map! :map prog-mode-map "C-h C-f" #'find-function-at-point)
+  (map! :map prog-mode-map
+        :localleader
+        :desc "Find function at point"
+        "g p" #'find-function-at-point))
+
+(use-package! js-mode
+  :ensure t
+  :mode "\\.js\\'")
+(add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
+(add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
+
+(use-package web-mode
+  :mode (("\\.html?\\'" . web-mode)
+         ("\\.css\\'"   . web-mode)
+         ("\\.js\\'"   . web-mode)
+         ("\\.jsx?\\'"  . web-mode))
+  :config
+  (setq web-mode-markup-indent-offset 2)
+  (setq web-mode-code-indent-offset 2)
+  (setq web-mode-css-indent-offset 2)
+  (setq web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'"))))
