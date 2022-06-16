@@ -61,3 +61,4 @@
 (package! evil-textobj-tree-sitter)
 (package! engine-mode)
 (package! leetcode)
+(package! devdocs)

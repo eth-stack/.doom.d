@@ -87,6 +87,7 @@
  json-reformat:indent-width 2
 
  ;; lsp
+ ;; lsp-ui-sideline-enable nil
  lsp-ui-doc-enable nil
  +lsp-prompt-to-install-server 'quiet
  )
@@ -178,7 +179,6 @@
   (setq lsp-idle-delay 0.2
         lsp-enable-file-watchers nil
         lsp-completion-provider t
-        lsp-eldoc-render-all t
         )
   (add-hook 'lsp-mode-hook 'lsp-ui-mode)
 
@@ -193,6 +193,8 @@
   (lsp-rust-analyzer-display-parameter-hints nil)
   (lsp-rust-analyzer-display-reborrow-hints nil)
   )
+
+(setq lsp-eldoc-hook nil)
 
 (use-package! lsp-ui
   :commands lsp-ui-mode
@@ -210,7 +212,7 @@
   (lsp-ui-doc-position 'bottom)
   (lsp-ui-peek-always-show t)
   (lsp-ui-sideline-show-hover t)
-  )
+  (lsp-ui-doc-enable nil)  )
 
 ;; lsp format use prettier
 (add-hook! 'after-init-hook
@@ -349,6 +351,11 @@
         leetcode-directory "~/github/nghiatd/go-leetcode")
   )
 
+(add-to-list 'auto-mode-alist '("\\.js\\'" . js2-mode))
+
+;; Better imenu
+(add-hook 'js2-mode-hook #'js2-imenu-extras-mode)
+
 
 (use-package! tree-sitter
   :config
@@ -367,20 +374,3 @@
         :localleader
         :desc "Find function at point"
         "g p" #'find-function-at-point))
-
-(use-package! js-mode
-  :ensure t
-  :mode "\\.js\\'")
-(add-to-list 'auto-mode-alist '("\\.js\\'" . web-mode))
-(add-to-list 'auto-mode-alist '("\\.jsx\\'" . web-mode))
-
-(use-package web-mode
-  :mode (("\\.html?\\'" . web-mode)
-         ("\\.css\\'"   . web-mode)
-         ("\\.js\\'"   . web-mode)
-         ("\\.jsx?\\'"  . web-mode))
-  :config
-  (setq web-mode-markup-indent-offset 2)
-  (setq web-mode-code-indent-offset 2)
-  (setq web-mode-css-indent-offset 2)
-  (setq web-mode-content-types-alist '(("jsx" . "\\.js[x]?\\'"))))
