@@ -87,9 +87,12 @@
  json-reformat:indent-width 2
 
  ;; lsp
- lsp-ui-sideline-enable nil
- lsp-ui-doc-enable nil
- lsp-enable-symbol-highlighting nil
+ lsp-headerline-breadcrumb-enable t
+ lsp-lens-enable t
+ lsp-ui-sideline-enable t
+ lsp-diagnostics-provider 'flycheck
+ lsp-ui-doc-enable t
+ lsp-modeline-code-actions-enable t
  +lsp-prompt-to-install-server 'quiet
  )
 
@@ -312,35 +315,12 @@
 
 
 (use-package! tree-sitter
-:config
+  :config
 
-(tree-sitter-require 'tsx)
-(add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-mode . tsx))
+  (tree-sitter-require 'tsx)
+  (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-mode . tsx))
 
-;; This makes every node a link to a section of code
-(setq tree-sitter-debug-jump-buttons t
+  ;; This makes every node a link to a section of code
+  (setq tree-sitter-debug-jump-buttons t
         ;; and this highlights the entire sub tree in your code
         tree-sitter-debug-highlight-jump-region t))
-
-(use-package! lsp-ui
-  :commands lsp-ui-mode
-  :hook (lsp-mode . lsp-ui-mode)
-  :config
-  (setq lsp-headerline-breadcrumb-enable t ;
-        lsp-lens-enable t                  ;
-        )
-  :bind (:map lsp-ui-mode-map
-         ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
-         ([remap xref-find-references] . lsp-ui-peek-find-references)
-         ([remap xref-pop-marker-stack] . lsp-ui-peek-jump-backward)
-         )
-  :custom
-  (lsp-ui-doc-position 'bottom)
-  (lsp-ui-peek-always-show t)
-  (lsp-ui-sideline-show-hover t)
-  (lsp-ui-doc-enable nil)
-  )
-
-(after! which-key
-  (setq! which-key-idle-delay 0.1
-         which-key-idle-secondary-delay 0.2))
