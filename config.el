@@ -194,8 +194,6 @@
   (lsp-rust-analyzer-display-reborrow-hints nil)
   )
 
-(setq lsp-eldoc-hook nil)
-
 (use-package! lsp-ui
   :commands lsp-ui-mode
   :hook (lsp-mode . lsp-ui-mode)
@@ -236,6 +234,7 @@
   )
 
 (add-hook! typescript-tsx-mode 'lsp!)
+(add-hook! js2-mode 'lsp!)
 
 
 
