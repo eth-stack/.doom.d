@@ -252,8 +252,8 @@
 (use-package engine-mode
   :config
   (engine/set-keymap-prefix (kbd "C-c s"))
-  (setq browse-url-browser-function 'browse-url-default-macosx-browser
-        engine/browser-function 'browse-url-default-macosx-browser
+  (setq browse-url-browser-function 'browse-url-default-browser
+        engine/browser-function 'browse-url-default-browser
         ;; browse-url-generic-program "google-chrome"
         )
   (defengine duckduckgo
@@ -312,13 +312,13 @@
 
 
 (use-package! tree-sitter
-  :config
+:config
 
-  (tree-sitter-require 'tsx)
-  (add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-mode . tsx))
+(tree-sitter-require 'tsx)
+(add-to-list 'tree-sitter-major-mode-language-alist '(typescript-tsx-mode . tsx))
 
-  ;; This makes every node a link to a section of code
-  (setq tree-sitter-debug-jump-buttons t
+;; This makes every node a link to a section of code
+(setq tree-sitter-debug-jump-buttons t
         ;; and this highlights the entire sub tree in your code
         tree-sitter-debug-highlight-jump-region t))
 
@@ -340,3 +340,7 @@
   (lsp-ui-sideline-show-hover t)
   (lsp-ui-doc-enable nil)
   )
+
+(after! which-key
+  (setq! which-key-idle-delay 0.1
+         which-key-idle-secondary-delay 0.2))
