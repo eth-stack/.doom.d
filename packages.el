@@ -62,3 +62,5 @@
 (package! engine-mode)
 (package! leetcode)
 (package! devdocs)
+
+(disable-packages! bookmark tide eldoc grip-mode)

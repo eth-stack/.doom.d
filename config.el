@@ -65,7 +65,7 @@
   (doom-themes-org-config))
 
 
-(defun dqv/org-mode-visual-fill ()
+(defun my/org-mode-visual-fill ()
   (setq visual-fill-column-width 120
         visual-fill-column-center-text t
         )
@@ -73,7 +73,7 @@
   )
 
 (use-package! visual-fill
-  :hook (org-mode . dqv/org-mode-visual-fill))
+  :hook (org-mode . my/org-mode-visual-fill))
 
 (delete-selection-mode t)
 
