@@ -64,3 +64,4 @@
 (package! devdocs)
 
 (disable-packages! bookmark tide eldoc grip-mode)
+(package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
