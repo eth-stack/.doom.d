@@ -373,4 +373,4 @@
         :localleader
         :desc "Find function at point"
         "g p" #'find-function-at-point))
-(use-package! lsp-tailwindcss)
+;; (use-package! lsp-tailwindcss)
