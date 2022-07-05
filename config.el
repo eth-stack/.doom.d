@@ -169,6 +169,7 @@
      (add-hook 'web-mode-hook #'prettier-js-mode)))
 
 (setq format-all-debug t)
+(setq lsp-eldoc-enable-hover nil)
 
 (add-hook 'after-init-hook #'global-prettier-mode)
 (add-hook 'after-init-hook #'global-tree-sitter-mode)
@@ -200,17 +201,18 @@
   :config
   (setq lsp-headerline-breadcrumb-enable t ;
         lsp-lens-enable t                  ;
+        lsp-ui-doc-position 'at-point
+        lsp-ui-peek-always-show t
+        lsp-ui-doc-show-with-cursor nil
+        lsp-ui-doc-show-with-mouse t
+        lsp-ui-doc-enable t
         )
   :bind (:map lsp-ui-mode-map
          ([remap xref-find-definitions] . lsp-ui-peek-find-definitions)
          ([remap xref-find-references] . lsp-ui-peek-find-references)
          ([remap xref-pop-marker-stack] . lsp-ui-peek-jump-backward)
          )
-  :custom
-  (lsp-ui-doc-position 'bottom)
-  (lsp-ui-peek-always-show t)
-  (lsp-ui-sideline-show-hover t)
-  (lsp-ui-doc-enable nil)  )
+  )
 
 ;; lsp format use prettier
 (add-hook! 'after-init-hook
