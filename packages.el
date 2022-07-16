@@ -11,7 +11,7 @@
 
 ;; To install a package directly from a remote git repo, you must specify a
 ;; `:recipe'. You'll find documentation on what `:recipe' accepts here:
-;; https://github.com/raxod502/straight.el#the-recipe-format
+;; https://github.com/radian-software/straight.el#the-recipe-format
 ;(package! another-package
 ;  :recipe (:host github :repo "username/repo"))
 
@@ -34,7 +34,7 @@
 
 ;; Specify a `:branch' to install a package from a particular branch or tag.
 ;; This is required for some packages whose default branch isn't 'master' (which
-;; our package manager can't deal with; see raxod502/straight.el#279)
+;; our package manager can't deal with; see radian-software/straight.el#279)
 ;(package! builtin-package :recipe (:branch "develop"))
 
 ;; Use `:pin' to specify a particular commit to install.
@@ -48,20 +48,4 @@
 ;(unpin! pinned-package another-pinned-package)
 ;; ...Or *all* packages (NOT RECOMMENDED; will likely break things)
 ;(unpin! t)
-(package! prettier-js)
-(package! prettier)
-(package! dotenv-mode)
-(package! sql-indent)
-(package! emacs-solidity
-  :recipe (:host github :repo "ethereum/emacs-solidity"))
-(package! evil-nerd-commenter)
-(package! move-text)
-(package! tree-sitter)
-(package! tree-sitter-langs)
-(package! evil-textobj-tree-sitter)
-(package! engine-mode)
-(package! leetcode)
-(package! devdocs)
-
-(disable-packages! bookmark tide eldoc grip-mode)
-;; (package! lsp-tailwindcss :recipe (:host github :repo "merrickluo/lsp-tailwindcss"))
+(package! rainbow-mode)
