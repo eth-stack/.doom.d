@@ -119,13 +119,12 @@
 (global-set-key (kbd "C-/") 'evilnc-comment-or-uncomment-lines)
 
 (map!
- :leader "= ="        #'format-all-buffer
-
  :leader "["        #'hs-hide-block
  :leader "]"        #'hs-show-block
  )
 
 (map!
+ ;; :leader "=="        #'format-all-buffer
  "M-k"          #'move-text-up
  "M-j"          #'move-text-down
 
@@ -158,7 +157,7 @@
 
 
 (use-package! lsp-ui
-        :commands lsp-ui-mode
+  :commands lsp-ui-mode
   :hook (lsp-mode . lsp-ui-mode)
   :config
   (setq lsp-headerline-breadcrumb-enable t
@@ -175,3 +174,9 @@
 
 ;; (evil-define-key 'normal 'lsp-ui-doc-mode
 ;;       [?K] #'lsp-ui-doc-show)
+
+;; (add-hook 'typescript-mode-hook
+;;           (lambda () (local-set-key 'normal (kbd "SPC = =") #'prettier-prettify)))
+(evil-define-key 'normal 'global (kbd "SPC = =") 'format-all-buffer)
+(evil-define-key 'normal typescript-mode-map (kbd "SPC = =") 'prettier-prettify)
+(evil-define-key 'normal rustic-mode-map (kbd "SPC = =") 'rustic-format-buffer)
